@@ -1,2 +1,5 @@
 [bank_instructions]
-    path = 'Customisation/my_bank_instructions.py'
+    path = 'Customisation/my_bank_instructions.toml'
+
+[invoicees]
+    path = 'Customisation/invoicees.toml'
