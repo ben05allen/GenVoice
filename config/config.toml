@@ -1,0 +1,2 @@
+[bank_instructions]
+    path = 'Customisation/my_bank_instructions.py'

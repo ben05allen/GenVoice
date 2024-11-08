@@ -16,9 +16,9 @@ class AccountTypeEnum(StrEnum):
 class BankInstructions(BaseModel):
     bank_name: str
     branch_name: str
+    bank_code: str
     branch_code: str | None = None
     swift_bic_code: str
     recipient_type: ReceipientTypeEnum
-    bank_code: str
     account_number: str
     account_type: AccountTypeEnum
