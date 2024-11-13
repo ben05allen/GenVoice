@@ -1,7 +1,7 @@
 from pathlib import Path
 import tomllib
 
-from schedules.invoicee import Invoicee
+from app.schedules.address import Invoicee
 
 
 def get_invoicees(source: Path) -> Invoicee:

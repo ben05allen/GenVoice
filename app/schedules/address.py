@@ -3,7 +3,7 @@ from pydantic import EmailStr
 from . import BaseModel
 
 
-class Invoicee(BaseModel):
+class Address(BaseModel):
     name: str
     street_address: str
     district: str | None = None
