@@ -10,6 +10,6 @@ wheels/
 .venv
 
 # User Data
-Customisation/
+data/
 Processed/
 ToImport/

@@ -18,6 +18,6 @@ dev = [
 ]
 
 [tool.genvoice]
-bank_instructions_path = 'Customisation/my_bank_instructions.toml'
-invoicees_path = 'Customisation/invoicees.toml'
-invoice_template_path = 'Customisation/invoice.html'
+bank_instructions_path = 'data/my_bank_instructions.toml'
+invoicees_path = 'data/invoicees.toml'
+invoice_template_path = 'data/invoice.html'
