@@ -4,13 +4,13 @@ import tomllib
 from bank_instructions import get_instructions
 from invoicees import get_invoicees
 
-with open(Path(__file__).parents[1] / "config" / "config.toml", "rb") as f:
-    config = tomllib.load(f)
+with open(Path(__file__).parents[1] / "pyproject.toml", "rb") as f:
+    config = tomllib.load(f).get("tool", {}).get("genvoice", {})
 
-bank_instructions_path = config["bank_instructions"]["path"]
+bank_instructions_path = config["bank_instructions_path"]
 INSTRUCTIONS = get_instructions(Path(bank_instructions_path))
 
-invoicees_path = config["invoicees"]["path"]
+invoicees_path = config["invoicees_path"]
 INVOICEES = get_invoicees(Path(invoicees_path))
 
 

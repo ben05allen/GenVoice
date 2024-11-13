@@ -1,11 +1,11 @@
 from pathlib import Path
 import tomllib
 
-from app.schedules.address import Invoicee
+from schedules.address import Address
 
 
-def get_invoicees(source: Path) -> Invoicee:
+def get_invoicees(source: Path) -> dict[str, Address]:
     with source.open("rb") as f:
         invoicees = tomllib.load(f)
 
-        return {k: Invoicee(**v) for k, v in invoicees.items()}
+        return {k: Address(**v) for k, v in invoicees.items()}

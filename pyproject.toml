@@ -1,5 +1,5 @@
 [project]
-name = "outvoice"
+name = "genvoice"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
@@ -16,3 +16,8 @@ dependencies = [
 dev = [
     "pytest>=8.3.3",
 ]
+
+[tool.genvoice]
+bank_instructions_path = 'Customisation/my_bank_instructions.toml'
+invoicees_path = 'Customisation/invoicees.toml'
+invoice_template_path = 'Customisation/invoice.html'
