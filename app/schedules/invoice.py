@@ -1,5 +1,5 @@
 from datetime import date
-from pydantic import model_validator
+from pydantic import model_validator, model_serializer
 
 from . import BaseModel
 from bank_instructions import BankInstructions
@@ -30,4 +30,4 @@ class Invoice(BaseModel):
     invoicee: Address
     sender: Address
     bank_instructions: BankInstructions
-    line_items: list[LineItem]
+    items: list[LineItem]
