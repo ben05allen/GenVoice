@@ -19,6 +19,10 @@ class LineItem(BaseModel):
             data["total"] = data["quantity"] * data["price"]
         return data
 
+    @field_serializer("price", "total")
+    def serialize_floats(self, value: float):
+        return f"{value:.2f}"
+
 
 class Invoice(BaseModel):
     invoice_date: date
@@ -33,5 +37,9 @@ class Invoice(BaseModel):
     items: list[LineItem]
 
     @field_serializer("invoice_date", "period_from", "period_to", "due_date")
-    def serialize_date(self, date: date, _info):
+    def serialize_dates(self, date: date):
         return date.strftime("%d/%m/%Y")
+
+    @field_serializer("total")
+    def serialize_floats(self, value: float):
+        return f"{value:.2f}"
