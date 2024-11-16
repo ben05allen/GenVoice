@@ -1,5 +1,5 @@
 from datetime import date
-from pydantic import model_validator, model_serializer
+from pydantic import model_validator, field_serializer
 
 from . import BaseModel
 from bank_instructions import BankInstructions
@@ -31,3 +31,7 @@ class Invoice(BaseModel):
     sender: Address
     bank_instructions: BankInstructions
     items: list[LineItem]
+
+    @field_serializer("invoice_date", "period_from", "period_to", "due_date")
+    def serialize_date(self, date: date, _info):
+        return date.strftime("%d/%m/%Y")
