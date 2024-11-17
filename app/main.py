@@ -4,6 +4,7 @@ import tomllib
 
 from bank_instructions import get_instructions
 from invoicees import get_invoicees
+from schedules.invoice import Invoice
 
 with open(Path(__file__).parents[1] / "pyproject.toml", "rb") as f:
     config = tomllib.load(f).get("tool", {}).get("genvoice", {})
@@ -24,7 +25,6 @@ def main():
         "period_from": "2023-09-01",
         "period_to": "2023-09-30",
         "due_date": "2023-11-05",
-        "total": 50.00,
         "invoice_number": "1",
         "sender": {
             "name": "Joe Bloggs",
@@ -49,18 +49,26 @@ def main():
             "branch_name": "Main Branch",
             "branch_code": "123",
             "swift_bic_code": "ABC123",
-            "recipient_type": "Savings",
+            "recipient_type": "Private",
             "bank_code": "123",
             "account_number": "12_3456_7890",
-            "account_type": "Savings",
+            "account_type": "Futsuu",
         },
         "items": [
-            {"description": "sprockets", "quantity": 1, "price": 10.00, "total": 10.00},
-            {"description": "widgets", "quantity": 2, "price": 20.00, "total": 40.00},
+            {
+                "description": "sprockets",
+                "quantity": 1,
+                "price": 10.00,
+            },
+            {
+                "description": "widgets",
+                "quantity": 2,
+                "price": 20.556,
+            },
         ],
     }
 
-    rendered_html = INVOICE_TEMPLATE.render(data)
+    rendered_html = INVOICE_TEMPLATE.render(Invoice(**data).model_dump())
 
     with open("data/index.html", "w") as f:
         f.write(rendered_html)
