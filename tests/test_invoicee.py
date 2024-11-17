@@ -1,11 +1,11 @@
 from pydantic import ValidationError
 import pytest
 
-from app.schedules.address import Invoicee
+from app.schedules.address import Address
 
 
 def test_invoicee():
-    Invoicee(
+    Address(
         name="John Doe",
         phone_number="+1234567890",
         street_address="123 Main St",
@@ -19,7 +19,7 @@ def test_invoicee():
 
 def test_invoice_with_bad_email_raises():
     with pytest.raises(ValidationError):
-        Invoicee(
+        Address(
             name="John Doe",
             phone_number="+1234567890",
             street_address="123 Main St",

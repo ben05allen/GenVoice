@@ -1,5 +1,6 @@
 from datetime import date
 from pydantic import model_validator, field_serializer
+from typing_extensions import Self
 
 from . import BaseModel
 from .bank_instructions import BankInstructions
@@ -23,6 +24,7 @@ class LineItem(BaseModel):
 class Invoice(BaseModel):
     invoice_date: date
     due_date: date
+    total: float | None = None
     invoice_number: str
     invoicee: Address
     sender: Address
@@ -32,3 +34,9 @@ class Invoice(BaseModel):
     @field_serializer("invoice_date", "due_date")
     def serialize_dates(self, date: date):
         return date.strftime("%B %d, %Y")
+
+    @model_validator(mode='after')
+    def total_invoices(self) -> Self:
+        self.total = sum(item.price * item.quantity for item in self.items)
+        return self
+
