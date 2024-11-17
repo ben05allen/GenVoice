@@ -35,8 +35,7 @@ class Invoice(BaseModel):
     def serialize_dates(self, date: date):
         return date.strftime("%B %d, %Y")
 
-    @model_validator(mode='after')
+    @model_validator(mode="after")
     def total_invoices(self) -> Self:
         self.total = sum(item.price * item.quantity for item in self.items)
         return self
-
