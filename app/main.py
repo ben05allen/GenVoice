@@ -18,6 +18,8 @@ INVOICEES = get_invoicees(invoicees_path)
 invoice_template_path = Path(config["invoice_template_path"])
 INVOICE_TEMPLATE = Template(open(str(invoice_template_path)).read())
 
+OUT_DIR = Path(config["out_dir"])
+
 
 def main():
     data = {
@@ -34,6 +36,7 @@ def main():
             "post_code": "12345",
             "country": "USA",
             "email": "joe.bloggs@example.com",
+            "phone_number": "+0000000000000000",
         },
         "invoicee": {
             "name": "Jane Smith",
@@ -43,6 +46,7 @@ def main():
             "post_code": "12345",
             "country": "USA",
             "email": "jane.smith@example.com",
+            "phone_number": "+0000000000000000",
         },
         "bank_instructions": {
             "bank_name": "abc bank",
@@ -70,7 +74,7 @@ def main():
 
     rendered_html = INVOICE_TEMPLATE.render(Invoice(**data).model_dump())
 
-    with open("data/index.html", "w") as f:
+    with open(OUT_DIR / "index.html", "w") as f:
         f.write(rendered_html)
 
 

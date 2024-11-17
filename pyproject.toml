@@ -20,4 +20,5 @@ dev = [
 [tool.genvoice]
 bank_instructions_path = 'data/my_bank_instructions.toml'
 invoicees_path = 'data/invoicees.toml'
-invoice_template_path = 'data/invoice.html'
+invoice_template_path = 'app/templates/invoice.html'
+out_dir = 'data'

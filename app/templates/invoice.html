@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Invoice</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-gray-100">
+    <div class="max-w-4xl mx-auto my-8 p-6 bg-white rounded shadow-md">
+      <h1 class="text-4xl font-bold mb-4">Invoice</h1>
+      <div class="flex flex-row justify-between mx-5 gap-2 mb-20">
+        <div class="text-blue-600 text-right font-bold">To</div>
+        <div>
+          <p>{{ invoicee.name }}</p>
+          <p>{{ invoicee.email }}</p>
+          <p class="mb-4">{{ invoicee.phone_number }}</p>
+          <p>{{ invoicee.street_address }}</p>
+          <p>{{ invoicee.district }}</p>
+          <p>{{ invoicee.city }} {{ invoicee.post_code }}</p>
+          <p>{{ invoicee.country }}</p>
+        </div>
+        <div class="text-blue-600 text-right font-bold">From</div>
+        <div>
+          <p>{{ sender.name }}</p>
+          <p>{{ sender.email }}</p>
+          <p class="mb-4">{{ sender.phone_number }}</p>
+          <p>{{ sender.street_address }}</p>
+          <p>{{ sender.district }}</p>
+          <p>{{ sender.city }} {{ sender.post_code }}</p>
+          <p>{{ sender.country }}</p>
+        </div>
+        <div class="text-blue-600 text-right font-bold">
+          <p>Invoice Date</p>
+          <p>Due Date</p>
+          <p>Invoice Number</p>
+        </div>
+        <div>
+          <p>{{ invoice_date }}</p>
+          <p>{{ due_date }}</p>
+          <p>{{ invoice_number }}</p>
+        </div>
+      </div>
+
+      <table class="w-full border-collapse">
+        <thead>
+          <tr class="text-white bg-blue-600">
+            <th class="border px-4 py-2 text-left">Description</th>
+            <th class="border px-4 py-2 text-center">Rate</th>
+            <th class="border px-4 py-2 text-center">Hours</th>
+            <th class="border px-4 py-2 text-right">Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in items %}
+          <tr>
+            <td class="border px-4 py-2">{{ item.description }}</td>
+            <td class="border px-4 py-2 text-center">
+              {{ "%.2f" | format(item.price) }}
+            </td>
+            <td class="border px-4 py-2 text-center">{{ item.quantity }}</td>
+            <td class="border px-4 py-2 text-right">
+              {{ "%.2f" | format(item.quantity * item.price) }}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+        <tfoot>
+          <tr class="font-bold">
+            <td colspan="3" class="border px-4 py-2 text-right">Total</td>
+            <td class="border px-4 py-2 text-right">
+              {{ "%.2f" | format(total) }}
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+      <p class="mt-20 mb-5">
+        Thank you for your business. My bank account details are;
+      </p>
+      <div class="flex flex-row gap-5 mx-5 text-sm">
+        <div class="text-blue-600 font-bold">
+          <p>Bank Name</p>
+          <p>Branch Name</p>
+          <p>Branch Code</p>
+          <p>SWIFT/BIC Code</p>
+          <p>Recipient Type</p>
+          <p>Bank Code</p>
+          <p>Account Number</p>
+          <p>Account Type</p>
+        </div>
+        <div>
+          <p>{{ bank_instructions.bank_name }}</p>
+          <p>{{ bank_instructions.branch_name }}</p>
+          <p>{{ bank_instructions.branch_code }}</p>
+          <p>{{ bank_instructions.swift_bic_code }}</p>
+          <p>{{ bank_instructions.recipient_type }}</p>
+          <p>{{ bank_instructions.bank_code }}</p>
+          <p>{{ bank_instructions.account_number }}</p>
+          <p>{{ bank_instructions.account_type }}</p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
