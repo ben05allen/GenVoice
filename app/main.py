@@ -27,7 +27,7 @@ def main():
         "period_from": "2023-09-01",
         "period_to": "2023-09-30",
         "due_date": "2023-11-05",
-        "invoice_number": "1",
+        "invoice_number": "1234",
         "sender": {
             "name": "Joe Bloggs",
             "street_address": "123 Main St",
@@ -68,6 +68,16 @@ def main():
                 "description": "widgets",
                 "quantity": 2,
                 "price": 20.556,
+            },
+            {
+                "description": "sprockets2",
+                "quantity": 4,
+                "price": 11.00,
+            },
+            {
+                "description": "widgets2",
+                "quantity": 3,
+                "price": 21.556,
             },
         ],
     }
