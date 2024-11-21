@@ -1,6 +1,7 @@
 from jinja2 import Template
 from pathlib import Path
 import tomllib
+from weasyprint import HTML
 
 from bank_instructions import get_instructions
 from invoicees import get_invoicees
@@ -84,8 +85,9 @@ def main():
 
     rendered_html = INVOICE_TEMPLATE.render(Invoice(**data).model_dump())
 
-    with open(OUT_DIR / "index.html", "w") as f:
-        f.write(rendered_html)
+    # with open(OUT_DIR / "index.html", "w") as f:
+    #     f.write(rendered_html)
+    HTML(string=rendered_html).write_pdf(OUT_DIR / "invoice.pdf")
 
 
 if __name__ == "__main__":
