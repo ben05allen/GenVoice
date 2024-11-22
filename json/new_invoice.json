@@ -5,13 +5,13 @@
   "due_date": "2023-11-05",
   "invoice_number": "1234",
   "sender": {
-    "name": "Jason Bloggs",
+    "name": "Joe Bloggs",
     "street_address": "123 Main St",
     "district": "Anywhere",
     "city": "Anytown",
     "post_code": "12345",
     "country": "USA",
-    "email": "jason.bloggs@example.com",
+    "email": "joe.bloggs@example.com",
     "phone_number": "+1000000000000000"
   },
   "invoicee": {
