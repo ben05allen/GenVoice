@@ -11,6 +11,6 @@ wheels/
 .venv
 
 # User Data
+*.pdf
 data/
-Processed/
-ToImport/
+private/
