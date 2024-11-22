@@ -37,11 +37,11 @@ def main():
             "post_code": "12345",
             "country": "USA",
             "email": "joe.bloggs@example.com",
-            "phone_number": "+0000000000000000",
+            "phone_number": "+1000000000000000",
         },
         "invoicee": {
             "name": "Jane Smith",
-            "street_address": "123 Main St",
+            "street_address": "321 Main St",
             "district": "Anywhere",
             "city": "Anytown",
             "post_code": "12345",
@@ -87,6 +87,7 @@ def main():
 
     # with open(OUT_DIR / "index.html", "w") as f:
     #     f.write(rendered_html)
+
     HTML(string=rendered_html).write_pdf(OUT_DIR / "invoice.pdf")
 
 

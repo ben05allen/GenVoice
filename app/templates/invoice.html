@@ -15,45 +15,50 @@
     </style>
   </head>
   <body>
-    <div class="max-w-4xl my-8 p-6 bg-white">
-      <div class="flex flex-row justify-between items-center mx-5">
-        <h1
-          class="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-blue-500 mb-10 w-max"
-        >
-          Invoice
-        </h1>
-        <img src="/static/logo_placeholder.jpg" alt="Your logo" class="h-24" />
+    <div class="max-w-4xl my-8 p-6 bg-white text-sm">
+      <div class="flex flex-row justify-between items-center mb-5">
+        <h1 class="text-4xl font-bold text-blue-600 mb-10">Invoice</h1>
+        <img src="/static/logo.png" alt="Your logo" class="h-24" />
       </div>
-      <div class="flex flex-row justify-between mx-5 gap-2 mb-20">
-        <div class="text-blue-600 text-right font-bold">To</div>
-        <div>
-          <p>{{ invoicee.name }}</p>
-          <p>{{ invoicee.email }}</p>
-          <p class="mb-4">{{ invoicee.phone_number }}</p>
-          <p>{{ invoicee.street_address }}</p>
-          <p>{{ invoicee.district }}</p>
-          <p>{{ invoicee.city }} {{ invoicee.post_code }}</p>
-          <p>{{ invoicee.country }}</p>
+      <div class="flex flex-row mb-10">
+        <div class="flex flex-row w-1/2">
+          <div class="text-blue-600 w-12">To</div>
+          <div class="text-xs">
+            <p>{{ invoicee.name }}</p>
+            <p>{{ invoicee.email }}</p>
+            <p class="mb-4">{{ invoicee.phone_number }}</p>
+            <p>{{ invoicee.street_address }}</p>
+            <p>{{ invoicee.district }}</p>
+            <p>{{ invoicee.city }} {{ invoicee.post_code }}</p>
+            <p>{{ invoicee.country }}</p>
+          </div>
         </div>
-        <div class="text-blue-600 text-right font-bold">From</div>
-        <div>
-          <p>{{ sender.name }}</p>
-          <p>{{ sender.email }}</p>
-          <p class="mb-4">{{ sender.phone_number }}</p>
-          <p>{{ sender.street_address }}</p>
-          <p>{{ sender.district }}</p>
-          <p>{{ sender.city }} {{ sender.post_code }}</p>
-          <p>{{ sender.country }}</p>
+        <div class="flex flex-row">
+          <div class="text-blue-600 w-24">From</div>
+          <div class="text-xs">
+            <p>{{ sender.name }}</p>
+            <p>{{ sender.email }}</p>
+            <p class="mb-4">{{ sender.phone_number }}</p>
+            <p>{{ sender.street_address }}</p>
+            <p>{{ sender.district }}</p>
+            <p>{{ sender.city }} {{ sender.post_code }}</p>
+            <p>{{ sender.country }}</p>
+          </div>
         </div>
-        <div class="text-blue-600 text-right font-bold">
-          <p>Invoice Date</p>
-          <p>Due Date</p>
-          <p>Invoice Number</p>
-        </div>
-        <div>
+      </div>
+
+      <div class="flex flex-col mb-10">
+        <div class="flex flex-row items-center">
+          <p class="text-blue-600 w-36">Invoice Date</p>
           <p>{{ invoice_date }}</p>
-          <p>{{ due_date }}</p>
+        </div>
+        <div class="flex flex-row items-center">
+          <p class="text-blue-600 w-36">Invoice Number</p>
           <p>{{ invoice_number }}</p>
+        </div>
+        <div class="flex flex-row items-center">
+          <p class="text-blue-600 w-36">Due Date</p>
+          <p>{{ due_date }}</p>
         </div>
       </div>
 
@@ -91,14 +96,12 @@
           </tr>
         </tfoot>
       </table>
-      <p class="mt-20 mb-5">
-        Thank you for your business, your support is very much appreciated!
-      </p>
-      <p class="mt-6 mb-5">
+
+      <p class="mt-10">
         Kindly send your payment to the following bank account details;
       </p>
-      <div class="flex flex-row gap-5 mx-5 text-sm">
-        <div class="text-blue-600 font-bold">
+      <div class="flex flex-row text-xs mt-5">
+        <div class="text-blue-600 w-36">
           <p>Bank Name</p>
           <p>Branch Name</p>
           <p>Branch Code</p>
@@ -119,6 +122,9 @@
           <p>{{ bank_instructions.account_type }}</p>
         </div>
       </div>
+      <p class="text-blue-600 text-base text-center mt-10">
+        Thank you for your business, your partnership is valued!
+      </p>
     </div>
   </body>
 </html>
