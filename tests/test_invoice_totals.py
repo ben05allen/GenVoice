@@ -1,4 +1,4 @@
-from app.schedules.invoice import Invoice
+from schedules.invoice import Invoice
 
 
 DATA = {

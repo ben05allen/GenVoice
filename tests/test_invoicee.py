@@ -1,7 +1,7 @@
 from pydantic import ValidationError
 import pytest
 
-from app.schedules.address import Address
+from schedules.address import Address
 
 
 def test_invoicee():

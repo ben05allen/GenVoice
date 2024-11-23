@@ -16,6 +16,10 @@ dev = [
     "pytest>=8.3.3",
 ]
 
+[tool.pytest.ini_options]
+pythonpath = ["app"]
+
+
 [tool.genvoice]
 bank_instructions_path = 'private/my_bank_instructions.toml'
 invoicees_path = 'private/invoicees.toml'

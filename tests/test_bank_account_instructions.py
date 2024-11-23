@@ -1,4 +1,4 @@
-from app.schedules.bank_instructions import BankInstructions
+from schedules.bank_instructions import BankInstructions
 
 
 def test_mock_bank_instructions():
