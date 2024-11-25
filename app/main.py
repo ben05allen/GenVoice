@@ -1,6 +1,5 @@
 from datetime import datetime
 from jinja2 import Template
-import json
 from pathlib import Path
 import tomllib
 from typing import Any
@@ -55,7 +54,8 @@ class Settings:
         )
 
     def get_invoice_data(self) -> Any:
-        return json.load(open(str(self.invoice_data_path)))
+        # return json.load(open(str(self.invoice_data_path)))
+        return tomllib.load(open(str(self.invoice_data_path), "rb"))
 
     def get_invoice_template(self) -> Template:
         return Template(open(str(self.invoice_template_path)).read())
@@ -72,7 +72,9 @@ class Settings:
 def main():
     settings = Settings.load_tool_config(BASE_PATH)
 
-    parsed_data = Invoice(**settings.get_invoice_data())
+    invoice_data = settings.get_invoice_data()
+    invoice_data["items"] = invoice_data["items"].values()
+    parsed_data = Invoice(**invoice_data)
     invoice_template = settings.get_invoice_template()
     rendered_html = invoice_template.render(parsed_data.model_dump())
 

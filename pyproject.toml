@@ -24,6 +24,6 @@ pythonpath = ["app"]
 bank_instructions_path = 'private/my_bank_instructions.toml'
 invoicees_path = 'private/invoicees.toml'
 invoicer_path = 'private/invoicer.toml'
-invoice_data_path = 'json/new_invoice.json'
+invoice_data_path = 'demo/trial.toml'
 invoice_template_path = 'app/templates/invoice.html'
 out_dir = 'out/'
