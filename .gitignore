@@ -13,3 +13,6 @@ wheels/
 # User Data
 *.pdf
 invoices/
+
+# SQLite files
+*.db

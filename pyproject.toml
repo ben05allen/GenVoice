@@ -1,7 +1,7 @@
 [project]
 name = "genvoice"
 version = "0.1.0"
-description = "Add your description here"
+description = "Generate invoices"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
@@ -11,19 +11,19 @@ dependencies = [
     "weasyprint>=63.0",
 ]
 
+[project.scripts]
+genvoice = "genvoice:main"
+
 [dependency-groups]
 dev = [
     "pytest>=8.3.3",
+    "pytest-cov>=6.0.0",
 ]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
 [tool.pytest.ini_options]
 pythonpath = ["app"]
 
-
-[tool.genvoice]
-bank_instructions_path = 'private/my_bank_instructions.toml'
-invoicees_path = 'private/invoicees.toml'
-invoicer_path = 'private/invoicer.toml'
-invoice_data_path = 'demo/trial.toml'
-invoice_template_path = 'app/templates/invoice.html'
-out_dir = 'out/'

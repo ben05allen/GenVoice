@@ -1,3 +1,5 @@
+# pyright: basic 
+
 from datetime import datetime
 from jinja2 import Template
 from pathlib import Path
@@ -5,7 +7,7 @@ import tomllib
 from typing import Any
 from weasyprint import HTML
 
-from schedules.invoice import Invoice
+from genvoice.schedules.invoice import Invoice
 
 
 BASE_PATH = Path(__file__).parents[1]
@@ -91,6 +93,3 @@ def main():
         base_url=settings.resolved_base_dir,
     ).write_pdf(settings.get_out_dir / file_name)
 
-
-if __name__ == "__main__":
-    main()

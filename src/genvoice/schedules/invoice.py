@@ -1,14 +1,19 @@
+# pyright: basic 
+
 from datetime import date
-from pydantic import model_validator, field_serializer
+from pydantic import AliasChoices, model_validator, field_serializer, Field
 from typing_extensions import Self
 
-from . import BaseModel
+from genvoice.schedules import Base
 from .bank_instructions import BankInstructions
 from .address import Address
 
 
-class LineItem(BaseModel):
+class LineItem(Base):
+    line_item_id: int = Field(validation_alias='id')
+    invoice_id: int
     description: str
+    currency: str
     quantity: int
     price: float
     total: float | None
@@ -21,11 +26,13 @@ class LineItem(BaseModel):
         return data
 
 
-class Invoice(BaseModel):
+class Invoice(Base):
     invoice_date: date
     due_date: date
+    period_start_date: date | None = Field(default=None, validation_alias=AliasChoices("period_start_date", "start_date"))
+    period_end_date: date | None = Field(default=None, validation_alias=AliasChoices("period_end_date", "end_date"))
     total: float | None = None
-    invoice_number: str
+    invoice_number: str = Field(validation_alias="id")
     invoicee: Address
     sender: Address
     bank_instructions: BankInstructions
