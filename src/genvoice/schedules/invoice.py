@@ -1,48 +1,68 @@
-# pyright: basic 
+# pyright: basic
 
 from datetime import date
-from pydantic import AliasChoices, model_validator, field_serializer, Field
+from decimal import Decimal, ROUND_HALF_UP
+from pydantic import (
+    AliasChoices,
+    model_validator,
+    field_validator,
+    field_serializer,
+    Field,
+)
+from typing import Any
 from typing_extensions import Self
 
 from genvoice.schedules import Base
-from .bank_instructions import BankInstructions
-from .address import Address
 
 
 class LineItem(Base):
-    line_item_id: int = Field(validation_alias='id')
+    line_item_id: int = Field(validation_alias="id")
     invoice_id: int
     description: str
     currency: str
-    quantity: int
-    price: float
-    total: float | None
+    quantity: Decimal
+    price: Decimal
+    _total: Decimal | None = None
 
-    @model_validator(mode="before")
+    @field_validator("quantity", "price", mode="before")
     @classmethod
-    def calculate_total(cls, data):
-        if isinstance(data, dict) and data.get("total") is None:
-            data["total"] = data["quantity"] * data["price"]
-        return data
+    def round_decimals(cls, v: Any):
+        if not isinstance(v, Decimal):
+            v = Decimal(str(v))
+
+        return v.quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
+
+    @model_validator(mode="after")
+    def calculate_total(self) -> Self:
+        if self._total is None:
+            self._total = (self.quantity * self.price).quantize(
+                Decimal("0.01"), rounding=ROUND_HALF_UP
+            )
+        return self
 
 
 class Invoice(Base):
+    invoice_id: int = Field(validation_alias="id")
     invoice_date: date
     due_date: date
-    period_start_date: date | None = Field(default=None, validation_alias=AliasChoices("period_start_date", "start_date"))
-    period_end_date: date | None = Field(default=None, validation_alias=AliasChoices("period_end_date", "end_date"))
-    total: float | None = None
-    invoice_number: str = Field(validation_alias="id")
-    invoicee: Address
-    sender: Address
-    bank_instructions: BankInstructions
-    items: list[LineItem]
+    period_start_date: date | None = Field(
+        default=None, validation_alias=AliasChoices("period_start_date", "start_date")
+    )
+    period_end_date: date | None = Field(
+        default=None, validation_alias=AliasChoices("period_end_date", "end_date")
+    )
+    invoicee: int
+    sender: int
+    bank_instructions: int
 
-    @field_serializer("invoice_date", "due_date")
-    def serialize_dates(self, date: date):
-        return date.strftime("%B %d, %Y")
+    @field_serializer(
+        "invoice_date",
+        "due_date",
+        "period_start_date",
+        "period_end_date",
+    )
+    def serialize_dates(self, date: date | None):
+        if date is not None:
+            return date.strftime("%B %d, %Y")
 
-    @model_validator(mode="after")
-    def total_invoices(self) -> Self:
-        self.total = sum(item.price * item.quantity for item in self.items)
-        return self
+        return None

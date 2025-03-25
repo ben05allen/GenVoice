@@ -15,11 +15,22 @@ class AccountTypeEnum(StrEnum):
 
 
 class BankInstructions(Base):
+    instructions_id: int = Field(validation_alias="id")
     bank_name: str
     branch: str
     bank_code: str
     branch_code: str | None = None
-    swift_bic_code: str = Field(validation_alias=AliasChoices("swift_bic_code", "bic"))
+    swift_bic_code: str = Field(
+        validation_alias=AliasChoices(
+            "swift_bic_code",
+            "bic",
+        )
+    )
     recipient_type: ReceipientTypeEnum
-    account_number: str
+    account_number: str = Field(
+        validation_alias=AliasChoices(
+            "account_number",
+            "account",
+        )
+    )
     account_type: AccountTypeEnum

@@ -1,4 +1,4 @@
-# pyright: basic 
+# pyright: basic
 
 from datetime import datetime
 from jinja2 import Template
@@ -92,4 +92,3 @@ def main():
         string=rendered_html,
         base_url=settings.resolved_base_dir,
     ).write_pdf(settings.get_out_dir / file_name)
-

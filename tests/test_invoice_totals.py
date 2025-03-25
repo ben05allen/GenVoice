@@ -1,4 +1,6 @@
-from schedules.invoice import Invoice
+# pyright: basic
+
+from genvoice.schedules.invoice import Invoice
 
 
 DATA = {
@@ -6,13 +8,13 @@ DATA = {
     "period_from": "2023-09-01",
     "period_to": "2023-09-30",
     "due_date": "2023-11-05",
-    "invoice_number": "1",
+    "id": 4,
     "sender": {
         "name": "Joe Bloggs",
         "street_address": "123 Main St",
         "district": "Anywhere",
         "city": "Anytown",
-        "post_code": "12345",
+        "postcode": "12345",
         "country": "USA",
         "email": "joe.bloggs@example.com",
     },
@@ -21,13 +23,13 @@ DATA = {
         "street_address": "123 Main St",
         "district": "Anywhere",
         "city": "Anytown",
-        "post_code": "12345",
+        "postcode": "12345",
         "country": "USA",
         "email": "jane.smith@example.com",
     },
     "bank_instructions": {
         "bank_name": "abc bank",
-        "branch_name": "Main Branch",
+        "branch": "Main Branch",
         "branch_code": "123",
         "swift_bic_code": "ABC123",
         "recipient_type": "Private",
@@ -37,12 +39,18 @@ DATA = {
     },
     "items": [
         {
+            "id": 1,
+            "invoice_id": 4,
             "description": "sprockets",
+            "currency": "USD",
             "quantity": 1,
             "price": 10.00,
         },
         {
+            "id": 2,
+            "invoice_id": 4,
             "description": "widgets",
+            "currency": "USD",
             "quantity": 2,
             "price": 20.556,
         },
