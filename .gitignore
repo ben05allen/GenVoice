@@ -10,10 +10,10 @@ wheels/
 # Environments
 .env
 .venv
+.python-version
 
 # User Data
 *.pdf
-invoices/
 
 # SQLite files
 *.db
