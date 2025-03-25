@@ -15,7 +15,6 @@ class AccountTypeEnum(StrEnum):
 
 
 class BankInstructions(Base):
-    instructions_id: int = Field(validation_alias="id")
     bank_name: str
     branch: str
     bank_code: str

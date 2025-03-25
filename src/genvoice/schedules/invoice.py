@@ -16,8 +16,6 @@ from genvoice.schedules import Base
 
 
 class LineItem(Base):
-    line_item_id: int = Field(validation_alias="id")
-    invoice_id: int
     description: str
     currency: str
     quantity: Decimal
@@ -43,13 +41,26 @@ class LineItem(Base):
 
 class Invoice(Base):
     invoice_id: int = Field(validation_alias="id")
-    invoice_date: date
+    invoice_date: date = Field(
+        validation_alias=AliasChoices(
+            "invoice_date",
+            "date",
+        )
+    )
     due_date: date
     period_start_date: date | None = Field(
-        default=None, validation_alias=AliasChoices("period_start_date", "start_date")
+        default=None,
+        validation_alias=AliasChoices(
+            "period_start_date",
+            "start_date",
+        ),
     )
     period_end_date: date | None = Field(
-        default=None, validation_alias=AliasChoices("period_end_date", "end_date")
+        default=None,
+        validation_alias=AliasChoices(
+            "period_end_date",
+            "end_date",
+        ),
     )
     invoicee: int
     sender: int

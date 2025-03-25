@@ -4,7 +4,6 @@ from genvoice.schedules import Base
 
 
 class Address(Base):
-    address_id: int = Field(validation_alias="id")
     name: str
     contact_name: str | None = None
     street_address: str

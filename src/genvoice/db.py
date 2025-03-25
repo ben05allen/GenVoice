@@ -29,7 +29,7 @@ def get_cursor():
 
 def get_invoice(id: int):
     query = (
-        "SELECT invoicee, date, due_date, bank_instructions, sender, start_date, end_date "
+        "SELECT id, invoicee, date, due_date, bank_instructions, sender, start_date, end_date "
         "FROM invoices WHERE id = ?"
     )
 
@@ -54,24 +54,39 @@ def get_sender(id: int):
 
 
 def get_bank_instructions(id: int):
-    cur = get_cursor()
+    query = (
+        "SELECT bank_name, branch, bic, recipient_type, bank_code, branch_code, account, account_type "
+        "FROM bank_instructions WHERE id = ?"
+    )
 
-    return cur.execute("SELECT * FROM bank_instructions WHERE id = ?", (id,)).fetchone()
+    with get_cursor() as cur:
+        cur.execute(query, (id,))
+        row = cur.fetchone()
+
+        return row
 
 
 def get_invoicee(id: int):
-    cur = get_cursor()
+    query = (
+        "SELECT name, contact_name, street_address, suburb, city, postcode, country, email, phone "
+        "FROM invoicees WHERE id = ?"
+    )
 
-    return cur.execute("SELECT * FROM invoicees WHERE id = ?", (id,)).fetchone()
+    with get_cursor() as cur:
+        cur.execute(query, (id,))
+        row = cur.fetchone()
+
+        return row
 
 
 def get_line_items(invoice_id: int):
-    cur = get_cursor()
+    query = (
+        "SELECT description, currency, quantity, price "
+        "FROM line_items WHERE invoice_id = ?"
+    )
 
-    return cur.execute(
-        "SELECT * FROM line_items WHERE invoice_id = ?", (invoice_id,)
-    ).fetchall()
+    with get_cursor() as cur:
+        cur.execute(query, (invoice_id,))
+        rows = cur.fetchall()
 
-
-if __name__ == "__main__":
-    print(get_sender(1))
+        return rows
