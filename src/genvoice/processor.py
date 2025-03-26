@@ -21,10 +21,12 @@ def get_template_data(invoice_id: int):
     template_dict["sender"] = sender.model_dump()
     template_dict["bank_instructions"] = bank_instructions.model_dump()
     template_dict["items"] = [li.model_dump() for li in line_items]
+    for li in template_dict["items"]:
+        li["total"] = f"${li['total']:,.2f}"
 
     template_dict["invoice_date"] = invoice.invoice_date
     template_dict["invoice_number"] = invoice.invoice_id
     template_dict["due_date"] = invoice.due_date
-    template_dict["total"] = str(sum(float(str(li.total)) for li in line_items))
+    template_dict["total"] = f"${sum(li.total for li in line_items):,.2f}"
 
     return template_dict
