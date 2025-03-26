@@ -20,7 +20,7 @@ class LineItem(Base):
     currency: str
     quantity: Decimal
     price: Decimal
-    _total: Decimal | None = None
+    total: Decimal | None = None
 
     @field_validator("quantity", "price", mode="before")
     @classmethod
@@ -32,8 +32,8 @@ class LineItem(Base):
 
     @model_validator(mode="after")
     def calculate_total(self) -> Self:
-        if self._total is None:
-            self._total = (self.quantity * self.price).quantize(
+        if self.total is None:
+            self.total = (self.quantity * self.price).quantize(
                 Decimal("0.01"), rounding=ROUND_HALF_UP
             )
         return self

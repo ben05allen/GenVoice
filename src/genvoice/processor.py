@@ -25,6 +25,6 @@ def get_template_data(invoice_id: int):
     template_dict["invoice_date"] = invoice.invoice_date
     template_dict["invoice_number"] = invoice.invoice_id
     template_dict["due_date"] = invoice.due_date
-    template_dict["total"] = "0.00"
+    template_dict["total"] = str(sum(float(str(li.total)) for li in line_items))
 
     return template_dict
