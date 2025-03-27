@@ -74,6 +74,6 @@ class Invoice(Base):
     )
     def serialize_dates(self, date: date | None):
         if date is not None:
-            return date.strftime("%B %d, %Y")
+            return date.strftime("%B %-d, %Y")
 
         return None

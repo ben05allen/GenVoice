@@ -7,12 +7,12 @@ from .schedules.address import Address
 
 
 def get_template_data(invoice_id: int):
-    invoice = Invoice(**db.get_invoice(invoice_id))
+    invoice = Invoice(**db.get_invoice(invoice_id)).model_dump()
     line_items = list(LineItem(**li) for li in db.get_line_items(invoice_id))
-    sender = Address(**db.get_sender(invoice.sender))
-    invoicee = Address(**db.get_invoicee(invoice.invoicee))
+    sender = Address(**db.get_sender(invoice["sender"]))
+    invoicee = Address(**db.get_invoicee(invoice["invoicee"]))
     bank_instructions = BankInstructions(
-        **db.get_bank_instructions(invoice.bank_instructions)
+        **db.get_bank_instructions(invoice["bank_instructions"])
     )
 
     template_dict = {}
@@ -24,9 +24,11 @@ def get_template_data(invoice_id: int):
     for li in template_dict["items"]:
         li["total"] = f"${li['total']:,.2f}"
 
-    template_dict["invoice_date"] = invoice.invoice_date
-    template_dict["invoice_number"] = invoice.invoice_id
-    template_dict["due_date"] = invoice.due_date
+    template_dict["invoice_date"] = invoice["invoice_date"]
+    template_dict["invoice_number"] = f"{invoice['invoice_id']:04d}"
+    template_dict["period_start"] = invoice["period_start_date"]
+    template_dict["period_end"] = invoice["period_end_date"]
+    template_dict["due_date"] = invoice["due_date"]
     template_dict["total"] = f"${sum(li.total for li in line_items):,.2f}"
 
     return template_dict

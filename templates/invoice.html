@@ -19,32 +19,32 @@
       <div class="flex flex-row justify-between items-center mb-5">
         <h1 class="text-4xl font-bold text-blue-600 mb-10">Invoice</h1>
         <div>
-          <img src="static/logo.png" alt="Your logo" class="h-24" />
+          <img src="static/logo.png" alt="" class="h-24" />
         </div>
       </div>
-      <div class="flex flex-row mb-10">
-        <div class="flex flex-row w-1/2">
-          <div class="text-blue-600 w-12">To</div>
-          <div class="text-xs">
+      <div class="flex flex-row mb-10 gap-20">
+        <div class="flex flex-row">
+          <div class="text-blue-600 w-24">To</div>
+          <div class="text-sm w-72">
             <p>{{ invoicee.name }}</p>
-            <p>{{ invoicee.email }}</p>
             <p class="mb-4">{{ invoicee.phone_number }}</p>
             <p>{{ invoicee.street_address }}</p>
-            <p>{{ invoicee.district }}</p>
-            <p>{{ invoicee.city }} {{ invoicee.post_code }}</p>
+            <p>{{ invoicee.suburb }}</p>
+            <p>{{ invoicee.city }} {{ invoicee.postcode }}</p>
             <p>{{ invoicee.country }}</p>
+            <p class="text-xs text-blue-500 underline">{{ invoicee.email }}</p>
           </div>
         </div>
         <div class="flex flex-row">
           <div class="text-blue-600 w-24">From</div>
-          <div class="text-xs">
+          <div class="text-sm w-72">
             <p>{{ sender.name }}</p>
-            <p>{{ sender.email }}</p>
             <p class="mb-4">{{ sender.phone_number }}</p>
             <p>{{ sender.street_address }}</p>
-            <p>{{ sender.district }}</p>
-            <p>{{ sender.city }} {{ sender.post_code }}</p>
+            <p>{{ sender.suburb }}</p>
+            <p>{{ sender.city }} {{ sender.postcode }}</p>
             <p>{{ sender.country }}</p>
+            <p class="text-xs text-blue-500 underline">{{ sender.email }}</p>
           </div>
         </div>
       </div>
@@ -59,6 +59,10 @@
           <p>{{ invoice_number }}</p>
         </div>
         <div class="flex flex-row items-center">
+          <p class="text-blue-600 w-36">Invoice Period</p>
+          <p>{{ period_start }} to {{ period_end }}</p>
+        </div>
+        <div class="flex flex-row items-center">
           <p class="text-blue-600 w-36">Due Date</p>
           <p>{{ due_date }}</p>
         </div>
@@ -66,7 +70,7 @@
 
       <table class="w-full border-collapse">
         <thead>
-          <tr class="text-white bg-gradient-to-r from-purple-600 to-blue-500">
+          <tr class="text-white bg-gradient-to-r from-blue-500 to-purple-600">
             <th class="border px-4 py-2 text-left">Description</th>
             <th class="border px-4 py-2 text-center">Rate</th>
             <th class="border px-4 py-2 text-center">Hours</th>
@@ -102,7 +106,7 @@
       <p class="mt-10">
         Kindly send your payment to the following bank account details;
       </p>
-      <div class="flex flex-row text-xs mt-5">
+      <div class="flex flex-row text-sm mt-5">
         <div class="text-blue-600 w-36">
           <p>Bank Name</p>
           <p>Branch Name</p>
@@ -124,8 +128,8 @@
           <p>{{ bank_instructions.account_type }}</p>
         </div>
       </div>
-      <p class="text-blue-600 text-base text-center mt-10">
-        Thank you for your business, your partnership is valued!
+      <p class="text-blue-600 text-base text-center mt-20">
+        Thank you for your business.
       </p>
     </div>
   </body>
