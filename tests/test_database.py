@@ -1,202 +1,204 @@
 # pyright: basic
 
-from contextlib import contextmanager
 import pytest
 import sqlite3
+import tempfile
 
 import genvoice.db as db
 
 
-@contextmanager
-def in_memory_db():
-    conn = sqlite3.connect(":memory:")
-    conn.row_factory = db.dict_factory
+@pytest.fixture(scope="module")
+def tmp_db():
+    with tempfile.NamedTemporaryFile(suffix="db") as tmp_db_file:
+        conn = sqlite3.connect(tmp_db_file.name)
+        conn.row_factory = db.dict_factory
 
-    cursor = conn.cursor()
+        cursor = conn.cursor()
 
-    # set up test bank instructions
-    _ = cursor.execute("""
-        CREATE TABLE bank_instructions( 
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            bank_name TEXT NOT NULL,
-            branch TEXT NOT NULL,
-            bic TEXT NOT NULL,
-            recipient_type TEXT,
-            bank_code TEXT,
-            branch_code TEXT,
-            account TEXT,
-            account_type TEXT)
+        # set up test bank instructions
+        _ = cursor.execute("""
+            CREATE TABLE bank_instructions( 
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                bank_name TEXT NOT NULL,
+                branch TEXT NOT NULL,
+                bic TEXT NOT NULL,
+                recipient_type TEXT,
+                bank_code TEXT,
+                branch_code TEXT,
+                account TEXT,
+                account_type TEXT)
+            """)
+
+        bank_instructions = [
+            (
+                "Mock Bank",
+                "Main St",
+                "MOCKBANK",
+                "Private",
+                "1234",
+                "012",
+                "1234567890",
+                "Futsuu",
+            )
+        ]
+
+        _ = cursor.executemany(
+            """
+            INSERT INTO bank_instructions (
+                bank_name, branch, bic, recipient_type, bank_code, branch_code, account, account_type
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            """,
+            bank_instructions,
+        )
+
+        # set up test invoicee
+        _ = cursor.execute("""
+            CREATE TABLE invoicees(
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                name TEXT NOT NULL,
+                contact_name TEXT,
+                street_address TEXT,
+                suburb TEXT,
+                city TEXT,
+                postcode TEXT,
+                country TEXT,
+                email TEXT,
+                phone TEXT)
         """)
 
-    bank_instructions = [
-        (
-            "Mock Bank",
-            "Main St",
-            "MOCKBANK",
-            "Private",
-            "1234",
-            "012",
-            "1234567890",
-            "Futsuu",
+        invoicee = [
+            (
+                "Acme Corp",
+                "John Smith",
+                "123 Main St",
+                "Downtown",
+                "Big Smoke",
+                "1234",
+                "Atlantis",
+                "john@email.com",
+                "01-234-5678",
+            )
+        ]
+
+        _ = cursor.executemany(
+            """
+            INSERT INTO invoicees (
+                name, contact_name, street_address, suburb, city, postcode, country, email, phone
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) 
+            """,
+            invoicee,
         )
-    ]
 
-    _ = cursor.executemany(
-        """
-        INSERT INTO bank_instructions (
-            bank_name, branch, bic, recipient_type, bank_code, branch_code, account, account_type
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-        """,
-        bank_instructions,
-    )
+        # set up test sender
+        _ = cursor.execute("""
+            CREATE TABLE senders(
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                name TEXT NOT NULL,
+                street_address TEXT NOT NULL,
+                suburb TEXT NOT NULL,
+                prefecture TEXT NOT NULL,
+                postcode TEXT NOT NULL,
+                country TEXT NOT NULL,
+                email TEXT NOT NULL,
+                phone TEXT NOT NULL)
+        """)
 
-    # set up test invoicee
-    _ = cursor.execute("""
-        CREATE TABLE invoicees(
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            name TEXT NOT NULL,
-            contact_name TEXT,
-            street_address TEXT,
-            suburb TEXT,
-            city TEXT,
-            postcode TEXT,
-            country TEXT,
-            email TEXT,
-            phone TEXT)
-    """)
+        sender = [
+            (
+                "Alice Jones",
+                "10 Pleasant Place",
+                "Sunnyville",
+                "South State",
+                "9876",
+                "Bigland",
+                "Alice@theinternet.com",
+                "09-876-5432",
+            )
+        ]
 
-    invoicee = [
-        (
-            "Acme Corp",
-            "John Smith",
-            "123 Main St",
-            "Downtown",
-            "Big Smoke",
-            "1234",
-            "Atlantis",
-            "john@email.com",
-            "01-234-5678",
+        _ = cursor.executemany(
+            """
+            INSERT INTO senders (
+                name, street_address, suburb, prefecture, postcode, country, email, phone
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            """,
+            sender,
         )
-    ]
 
-    _ = cursor.executemany(
-        """
-        INSERT INTO invoicees (
-            name, contact_name, street_address, suburb, city, postcode, country, email, phone
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) 
-        """,
-        invoicee,
-    )
+        # set up test invoice
+        _ = cursor.execute("""
+            CREATE TABLE invoices(
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                invoicee INTEGER NOT NULL,
+                date TEXT NOT NULL,
+                due_date TEXT NOT NULL,
+                bank_instructions INTEGER NOT NULL,
+                sender INTEGER NOT NULL,
+                start_date TEXT,
+                end_date TEXT,
+                FOREIGN KEY(bank_instructions) REFERENCES bank_instructions(id),
+                FOREIGN KEY(invoicee) REFERENCES invoicees(id),
+                FOREIGN KEY(sender) REFERENCES senders(id))
+        """)
 
-    # set up test sender
-    _ = cursor.execute("""
-        CREATE TABLE senders(
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            name TEXT NOT NULL,
-            street_address TEXT NOT NULL,
-            suburb TEXT NOT NULL,
-            prefecture TEXT NOT NULL,
-            postcode TEXT NOT NULL,
-            country TEXT NOT NULL,
-            email TEXT NOT NULL,
-            phone TEXT NOT NULL)
-    """)
+        invoice = [
+            (
+                1,
+                "2020-01-01",
+                "2020-01-15",
+                1,
+                1,
+                "2019-12-01",
+                "2019-12-31",
+            )
+        ]
 
-    sender = [
-        (
-            "Alice Jones",
-            "10 Pleasant Place",
-            "Sunnyville",
-            "South State",
-            "9876",
-            "Bigland",
-            "Alice@theinternet.com",
-            "09-876-5432",
+        _ = cursor.executemany(
+            """
+            INSERT INTO invoices (
+                invoicee, date, due_date, bank_instructions, sender, start_date, end_date
+            ) VALUES (?, ?, ?, ?, ?, ?, ?)
+            """,
+            invoice,
         )
-    ]
 
-    _ = cursor.executemany(
-        """
-        INSERT INTO senders (
-            name, street_address, suburb, prefecture, postcode, country, email, phone
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-        """,
-        sender,
-    )
+        # set up some test invoice line items
+        _ = cursor.execute(""" 
+            CREATE TABLE line_items(
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                invoice_id INTEGER NOT NULL DEFAULT 1,
+                description TEXT,
+                currency TEXT,
+                quantity NUMERIC,
+                price NUMERIC,
+                FOREIGN KEY("invoice_id") REFERENCES "invoices"("id"))
+        """)
 
-    # set up test invoice
-    _ = cursor.execute("""
-        CREATE TABLE invoices(
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            invoicee INTEGER NOT NULL,
-            date TEXT NOT NULL,
-            due_date TEXT NOT NULL,
-            bank_instructions INTEGER NOT NULL,
-            sender INTEGER NOT NULL,
-            start_date TEXT,
-            end_date TEXT,
-            FOREIGN KEY(bank_instructions) REFERENCES bank_instructions(id),
-            FOREIGN KEY(invoicee) REFERENCES invoicees(id),
-            FOREIGN KEY(sender) REFERENCES senders(id))
-    """)
+        line_items = [
+            (1, "Services Rendered", "JPY", 100, 5),
+            (1, "Professional Services", "JPY", 200, 6),
+        ]
 
-    invoice = [
-        (
-            1,
-            "2020-01-01",
-            "2020-01-15",
-            1,
-            1,
-            "2019-12-01",
-            "2019-12-31",
+        _ = cursor.executemany(
+            """
+            INSERT INTO line_items (
+                invoice_id, description, currency, quantity, price
+            ) VALUES (?, ?, ?, ?, ?)
+            """,
+            line_items,
         )
-    ]
 
-    _ = cursor.executemany(
-        """
-        INSERT INTO invoices (
-            invoicee, date, due_date, bank_instructions, sender, start_date, end_date
-        ) VALUES (?, ?, ?, ?, ?, ?, ?)
-        """,
-        invoice,
-    )
+        try:
+            conn.commit()
+            yield tmp_db_file.name
 
-    # set up some test invoice line items
-    _ = cursor.execute(""" 
-        CREATE TABLE line_items(
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            invoice_id INTEGER NOT NULL DEFAULT 1,
-            description TEXT,
-            currency TEXT,
-            quantity NUMERIC,
-            price NUMERIC,
-            FOREIGN KEY("invoice_id") REFERENCES "invoices"("id"))
-    """)
-
-    line_items = [
-        (1, "Services Rendered", "JPY", 100, 5),
-        (1, "Professional Services", "JPY", 200, 6),
-    ]
-
-    _ = cursor.executemany(
-        """
-        INSERT INTO line_items (
-            invoice_id, description, currency, quantity, price
-        ) VALUES (?, ?, ?, ?, ?)
-        """,
-        line_items,
-    )
-
-    try:
-        conn.commit()
-        yield cursor
-
-    finally:
-        conn.close()
+        finally:
+            conn.close()
 
 
-def test_fetch_bank_instructions(monkeypatch):
-    monkeypatch.setattr(db, "get_cursor", in_memory_db)
+def test_fetch_bank_instructions(tmp_db, monkeypatch):
+    tmp_db_file = tmp_db
+    monkeypatch.setenv("DB_PATH", tmp_db_file)
 
     row = db.get_bank_instructions(1)
     print(row)
@@ -214,8 +216,9 @@ def test_fetch_bank_instructions(monkeypatch):
     assert row["account_type"] == "Futsuu"
 
 
-def test_fetch_invoicee(monkeypatch):
-    monkeypatch.setattr(db, "get_cursor", in_memory_db)
+def test_fetch_invoicee(tmp_db, monkeypatch):
+    tmp_db_file = tmp_db
+    monkeypatch.setenv("DB_PATH", tmp_db_file)
 
     row = db.get_invoicee(1)
     with pytest.raises(KeyError):
@@ -233,8 +236,9 @@ def test_fetch_invoicee(monkeypatch):
     assert row["phone"] == "01-234-5678"
 
 
-def test_fetch_sender(monkeypatch):
-    monkeypatch.setattr(db, "get_cursor", in_memory_db)
+def test_fetch_sender(tmp_db, monkeypatch):
+    tmp_db_file = tmp_db
+    monkeypatch.setenv("DB_PATH", tmp_db_file)
 
     row = db.get_sender(1)
     with pytest.raises(KeyError):
@@ -251,8 +255,9 @@ def test_fetch_sender(monkeypatch):
     assert row["phone"] == "09-876-5432"
 
 
-def test_fetch_invoice(monkeypatch):
-    monkeypatch.setattr(db, "get_cursor", in_memory_db)
+def test_fetch_invoice(tmp_db, monkeypatch):
+    tmp_db_file = tmp_db
+    monkeypatch.setenv("DB_PATH", tmp_db_file)
 
     row = db.get_invoice(1)
     assert isinstance(row, dict)
@@ -266,8 +271,9 @@ def test_fetch_invoice(monkeypatch):
     assert row["end_date"] == "2019-12-31"
 
 
-def test_fetch_line_items(monkeypatch):
-    monkeypatch.setattr(db, "get_cursor", in_memory_db)
+def test_fetch_line_items(tmp_db, monkeypatch):
+    tmp_db_file = tmp_db
+    monkeypatch.setenv("DB_PATH", tmp_db_file)
 
     rows = db.get_line_items(1)
     assert len(rows) == 2
