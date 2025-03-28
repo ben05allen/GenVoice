@@ -40,7 +40,7 @@ class LineItem(Base):
 
 
 class Invoice(Base):
-    invoice_id: int = Field(validation_alias="id")
+    invoice_id: int = Field(validation_alias=AliasChoices("id", "invoice_id"))
     invoice_date: date = Field(
         validation_alias=AliasChoices(
             "invoice_date",
