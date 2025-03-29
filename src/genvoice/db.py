@@ -17,7 +17,7 @@ def get_cursor():
     _ = load_dotenv()
 
     db_path = Path(os.environ.get("DB_PATH", "invoices.db"))
-    conn = sqlite3.connect(db_path)
+    conn = sqlite3.connect(f"file:{db_path}?mode=ro", uri=True)
     conn.row_factory = dict_factory
 
     try:
