@@ -206,4 +206,5 @@ def test_get_template_data(tmp_db, monkeypatch):
     assert template_data["invoicee"]["name"] == "Acme Corp"
     assert template_data["bank_instructions"]["account_number"] == "0123456789"
     assert len(template_data["items"]) == 2
+    assert template_data["items"][0]["description"] == "Services Rendered"
     assert template_data["total"] == "$1,700.00"
