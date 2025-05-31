@@ -1,5 +1,4 @@
-# pyright: basic
-
+from datetime import datetime
 from decimal import Decimal
 
 from genvoice.schedules.invoice import Invoice, LineItem
@@ -8,8 +7,8 @@ from genvoice.schedules.invoice import Invoice, LineItem
 def test_invoice_serializer():
     invoice = Invoice(
         invoice_id=1,
-        invoice_date="2025-01-01",  # pyright: ignore
-        due_date="2025-01-15",  # pyright: ignore
+        invoice_date=datetime.strptime("2025-01-01", "%Y-%m-%d").date(),
+        due_date=datetime.strptime("2025-01-15", "%Y-%m-%d").date(),
         period_start_date=None,
         invoicee=1,
         sender=2,
@@ -46,8 +45,8 @@ def test_line_item_conversions():
     line_item = LineItem(
         description="New Line Item",
         currency="NZD",
-        quantity=5,  # pyright: ignore
-        price=20.00,  # pyright: ignore
+        quantity=5,  # type: ignore
+        price=20.00,  # type: ignore
         total=None,
     )
 
@@ -62,8 +61,8 @@ def test_line_item_total_not_provided():
     line_item = LineItem(
         description="New Line Item",
         currency="NZD",
-        quantity=5,  # pyright: ignore
-        price=20.00,  # pyright: ignore
+        quantity=Decimal("5"),
+        price=Decimal("20.00"),
     )
 
     assert line_item.description == "New Line Item"

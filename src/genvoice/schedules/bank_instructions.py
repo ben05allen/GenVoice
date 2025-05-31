@@ -1,5 +1,3 @@
-# pyright: basic
-
 from enum import StrEnum
 from pydantic import AliasChoices, Field
 

@@ -1,5 +1,3 @@
-# pyright: basic
-
 from pydantic import ValidationError
 import pytest
 
@@ -25,7 +23,7 @@ def test_invoice_with_bad_email_raises():
             name="John Doe",
             phone="+1234567890",
             street_address="123 Main St",
-            district="Westside",  # pyright: ignore
+            district="Westside",  # type: ignore
             city="Anytown",
             postcode="90001",
             country="USA",

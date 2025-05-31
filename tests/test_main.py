@@ -1,6 +1,3 @@
-# pyright: basic
-
-
 from freezegun import freeze_time
 from pypdf import PdfReader
 import pytest

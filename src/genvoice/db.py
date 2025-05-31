@@ -1,5 +1,3 @@
-# pyright: basic
-
 from contextlib import contextmanager
 from dotenv import load_dotenv
 import os

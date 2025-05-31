@@ -1,5 +1,3 @@
-# pyright: basic
-
 import pytest
 import sqlite3
 import tempfile

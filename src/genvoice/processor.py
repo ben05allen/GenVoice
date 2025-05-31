@@ -1,5 +1,3 @@
-# pyright: basic
-
 from . import db
 from .schedules.invoice import Invoice, LineItem
 from .schedules.bank_instructions import BankInstructions
@@ -7,11 +5,11 @@ from .schedules.address import Address
 
 
 def get_template_data(invoice_id: int):
-    invoice = Invoice(**db.get_invoice(invoice_id)).model_dump()
-    line_items = list(LineItem(**li) for li in db.get_line_items(invoice_id))
-    sender = Address(**db.get_sender(invoice["sender"]))
-    invoicee = Address(**db.get_invoicee(invoice["invoicee"]))
-    bank_instructions = BankInstructions(
+    invoice = Invoice(**db.get_invoice(invoice_id)).model_dump()  # type: ignore
+    line_items = list(LineItem(**li) for li in db.get_line_items(invoice_id))  # type: ignore
+    sender = Address(**db.get_sender(invoice["sender"]))  # type: ignore
+    invoicee = Address(**db.get_invoicee(invoice["invoicee"]))  # type: ignore
+    bank_instructions = BankInstructions(  # type: ignore
         **db.get_bank_instructions(invoice["bank_instructions"])
     )
 
@@ -29,6 +27,6 @@ def get_template_data(invoice_id: int):
     template_dict["period_start"] = invoice["period_start_date"]
     template_dict["period_end"] = invoice["period_end_date"]
     template_dict["due_date"] = invoice["due_date"]
-    template_dict["total"] = f"${sum(li.total for li in line_items):,.2f}"  # pyright: ignore
+    template_dict["total"] = f"${sum(li.total for li in line_items):,.2f}"
 
     return template_dict

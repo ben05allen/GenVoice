@@ -1,5 +1,3 @@
-# pyright: basic
-
 from genvoice.schedules.invoice import Invoice
 
 
@@ -16,8 +14,9 @@ DATA = {
 
 
 def test_dates_are_formatted():
-    inv = Invoice(**DATA).model_dump()
+    inv = Invoice(**DATA).model_dump()  # type: ignore
     assert inv["period_start_date"] == "September 1, 2023"
     assert inv["period_end_date"] == "September 30, 2023"
     assert inv["invoice_date"] == "October 20, 2023"
     assert inv["due_date"] == "November 5, 2023"
+    assert inv["sender"] == 1
