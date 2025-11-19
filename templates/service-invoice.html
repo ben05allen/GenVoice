@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -73,8 +73,8 @@
           <tr class="text-white bg-gradient-to-r from-blue-500 to-purple-600">
             <th class="border px-4 py-2 text-left">Description</th>
             <th class="border px-4 py-2 text-center">Rate</th>
-            <th class="border px-4 py-2 text-center">Hours</th>
-            <th class="border px-4 py-2 text-right">Amount</th>
+            <th class="border px-4 py-2 text-center">Amount</th>
+            <th class="border px-4 py-2 text-right">Total</th>
           </tr>
         </thead>
         <tbody>
@@ -83,22 +83,16 @@
             class="{% if loop.index0 % 2 == 0 %}bg-blue-50{% else %}bg-white{% endif %}"
           >
             <td class="border px-4 py-2">{{ item.description }}</td>
-            <td class="border px-4 py-2 text-center">
-              {{ item.price }}
-            </td>
+            <td class="border px-4 py-2 text-center">{{ item.price }}</td>
             <td class="border px-4 py-2 text-center">{{ item.quantity }}</td>
-            <td class="border px-4 py-2 text-right">
-              {{ item.total }}
-            </td>
+            <td class="border px-4 py-2 text-right">{{ item.total }}</td>
           </tr>
           {% endfor %}
         </tbody>
         <tfoot>
           <tr class="font-bold">
             <td colspan="3" class="border px-4 py-2 text-right">Total</td>
-            <td class="border px-4 py-2 text-right">
-              {{ total }}
-            </td>
+            <td class="border px-4 py-2 text-right">{{ total }}</td>
           </tr>
         </tfoot>
       </table>

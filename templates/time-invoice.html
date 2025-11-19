@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Invoice</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      @page {
+        size: A4;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="max-w-4xl my-8 p-6 bg-white text-sm">
+      <div class="flex flex-row justify-between items-center mb-5">
+        <h1 class="text-xl font-bold text-blue-600 mb-4">Invoice</h1>
+        <div>
+          <img src="static/logo.png" alt="" class="h-24" />
+        </div>
+      </div>
+      <div class="flex flex-row mb-10 gap-20">
+        <div class="flex flex-row">
+          <div class="text-blue-600 w-24">To</div>
+          <div class="text-sm w-72">
+            <p>{{ invoicee.name }}</p>
+            <p class="mb-4">{{ invoicee.phone_number }}</p>
+            <p>{{ invoicee.street_address }}</p>
+            <p>{{ invoicee.suburb }}</p>
+            <p>{{ invoicee.city }} {{ invoicee.postcode }}</p>
+            <p>{{ invoicee.country }}</p>
+            <p class="text-xs text-blue-500 underline">{{ invoicee.email }}</p>
+          </div>
+        </div>
+        <div class="flex flex-row">
+          <div class="text-blue-600 w-24">From</div>
+          <div class="text-sm w-72">
+            <p>{{ sender.name }}</p>
+            <p class="mb-4">{{ sender.phone_number }}</p>
+            <p>{{ sender.street_address }}</p>
+            <p>{{ sender.suburb }}</p>
+            <p>{{ sender.city }} {{ sender.postcode }}</p>
+            <p>{{ sender.country }}</p>
+            <p class="text-xs text-blue-500 underline">{{ sender.email }}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex flex-col mb-10">
+        <div class="flex flex-row items-center">
+          <p class="text-blue-600 w-36">Invoice Date</p>
+          <p>{{ invoice_date }}</p>
+        </div>
+        <div class="flex flex-row items-center">
+          <p class="text-blue-600 w-36">Invoice Number</p>
+          <p>{{ invoice_number }}</p>
+        </div>
+        <div class="flex flex-row items-center">
+          <p class="text-blue-600 w-36">Invoice Period</p>
+          <p>{{ period_start }} to {{ period_end }}</p>
+        </div>
+        <div class="flex flex-row items-center">
+          <p class="text-blue-600 w-36">Due Date</p>
+          <p>{{ due_date }}</p>
+        </div>
+      </div>
+
+      <table class="w-full border-collapse">
+        <thead>
+          <tr class="text-white bg-gradient-to-r from-blue-500 to-purple-600">
+            <th class="border px-4 py-2 text-left">Description</th>
+            <th class="border px-4 py-2 text-center">Rate</th>
+            <th class="border px-4 py-2 text-center">Hours</th>
+            <th class="border px-4 py-2 text-right">Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in items %}
+          <tr
+            class="{% if loop.index0 % 2 == 0 %}bg-blue-50{% else %}bg-white{% endif %}"
+          >
+            <td class="border px-4 py-2 text-xs">{{ item.description }}</td>
+            <td class="border px-4 py-2 text-xs text-center">
+              {{ item.price }}
+            </td>
+            <td class="border px-4 py-2 text-xs text-center">
+              {{ item.quantity }}
+            </td>
+            <td class="border px-4 py-2 text-xs text-right">
+              {{ item.total }}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+        <tfoot>
+          <tr class="font-bold">
+            <td colspan="3" class="border px-4 py-2 text-right">Total</td>
+            <td class="border px-4 py-2 text-right">{{ total }}</td>
+          </tr>
+        </tfoot>
+      </table>
+
+      <p class="mt-10">
+        Kindly send your payment to the following bank account details;
+      </p>
+      <div class="flex flex-row text-sm mt-5">
+        <div class="text-blue-600 w-36">
+          <p>Bank Name</p>
+          <p>Branch Name</p>
+          <p>Branch Code</p>
+          <p>SWIFT/BIC Code</p>
+          <p>Recipient Type</p>
+          <p>Bank Code</p>
+          <p>Account Number</p>
+          <p>Account Type</p>
+        </div>
+        <div>
+          <p>{{ bank_instructions.bank_name }}</p>
+          <p>{{ bank_instructions.branch }}</p>
+          <p>{{ bank_instructions.branch_code }}</p>
+          <p>{{ bank_instructions.swift_bic_code }}</p>
+          <p>{{ bank_instructions.recipient_type }}</p>
+          <p>{{ bank_instructions.bank_code }}</p>
+          <p>{{ bank_instructions.account_number }}</p>
+          <p>{{ bank_instructions.account_type }}</p>
+        </div>
+      </div>
+      <p class="text-blue-600 text-base text-center mt-20">
+        Thank you for your business.
+      </p>
+    </div>
+  </body>
+</html>
