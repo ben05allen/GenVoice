@@ -7,7 +7,6 @@ from pydantic import (
     field_serializer,
     Field,
 )
-from typing import Any
 from typing_extensions import Self
 
 from genvoice.schedules import Base
@@ -22,7 +21,7 @@ class LineItem(Base):
 
     @field_validator("quantity", "price", mode="before")
     @classmethod
-    def round_decimals(cls, v: Any):
+    def round_decimals(cls, v: int | float | Decimal | str) -> Decimal:
         if not isinstance(v, Decimal):
             v = Decimal(str(v))
 
