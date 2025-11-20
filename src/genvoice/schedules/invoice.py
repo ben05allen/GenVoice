@@ -72,6 +72,10 @@ class Invoice(Base):
     )
     def serialize_dates(self, date: date | None):
         if date is not None:
-            return date.strftime("%B %-d, %Y")
+            try:
+                return date.strftime("%B %-d, %Y")
+            except ValueError:
+                # Windows compatibility
+                return f"{date.strftime("%B")} {date.strftime("%d, %Y").lstrip("0")}"
 
         return None
