@@ -27,7 +27,7 @@ def get_cursor():
 
 def get_invoice(id: int):
     query = (
-        "SELECT id, invoicee, date, due_date, bank_instructions, sender, start_date, end_date "
+        "SELECT id, invoicee, date, due_date, payment_link, bank_instructions, sender, start_date, [end_date]"
         "FROM invoices WHERE id = ?"
     )
 
@@ -42,6 +42,19 @@ def get_sender(id: int):
     query = (
         "SELECT name, street_address, suburb, prefecture, postcode, country, email, phone "
         " FROM senders WHERE id = ?"
+    )
+
+    with get_cursor() as cur:
+        cur.execute(query, (id,))
+        row = cur.fetchone()
+
+        return row
+
+
+def get_payment_link(id: int):
+    query = (
+        "SELECT id, currency, amount, [url]"
+        "FROM payment_links WHERE id = ?"
     )
 
     with get_cursor() as cur:

@@ -61,7 +61,8 @@ class Invoice(Base):
     )
     invoicee: int
     sender: int
-    bank_instructions: int
+    payment_link: int | None = None
+    bank_instructions: int | None = None
 
     @field_serializer(
         "invoice_date",

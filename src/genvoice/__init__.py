@@ -20,6 +20,10 @@ def arg_parser():
         "--destination", "-d", help="Destination path of PDF", default="."
     )
 
+    parser.add_argument(
+        "--no_bank_details", "-n", help="Omit bank details from invoice", action="store_true"
+    )
+
     return parser
 
 
@@ -39,7 +43,8 @@ def main():
 
         destination /= file_name
 
-    template_dict = get_template_data(args.invoice)
+    exclude_bank_details = args.no_bank_details
+    template_dict = get_template_data(args.invoice, exclude_bank_details=exclude_bank_details)
     invoice_template = Template(open(str(invoice_template_path.resolve())).read())
     rendered_html = invoice_template.render(template_dict)
 

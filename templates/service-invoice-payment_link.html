@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Invoice</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      @page {
+        size: A4;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="max-w-4xl my-8 p-6 bg-white text-sm">
+      <div class="flex flex-row justify-between items-center mb-5">
+        <h1 class="text-4xl font-bold text-blue-600 mb-10">Invoice</h1>
+        <div>
+          <img src="static/logo.png" alt="" class="h-24" />
+        </div>
+      </div>
+      <div class="flex flex-row mb-10 gap-20">
+        <div class="flex flex-row">
+          <div class="text-blue-600 w-24">To</div>
+          <div class="text-sm w-72">
+            <p>{{ invoicee.name }}</p>
+            <p class="mb-4">{{ invoicee.phone_number }}</p>
+            <p>{{ invoicee.street_address }}</p>
+            <p>{{ invoicee.suburb }}</p>
+            <p>{{ invoicee.city }} {{ invoicee.postcode }}</p>
+            <p>{{ invoicee.country }}</p>
+            <p class="text-xs text-blue-500 underline">{{ invoicee.email }}</p>
+          </div>
+        </div>
+        <div class="flex flex-row">
+          <div class="text-blue-600 w-24">From</div>
+          <div class="text-sm w-72">
+            <p>{{ sender.name }}</p>
+            <p class="mb-4">{{ sender.phone_number }}</p>
+            <p>{{ sender.street_address }}</p>
+            <p>{{ sender.suburb }}</p>
+            <p>{{ sender.city }} {{ sender.postcode }}</p>
+            <p>{{ sender.country }}</p>
+            <p class="text-xs text-blue-500 underline">{{ sender.email }}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex flex-col mb-10">
+        <div class="flex flex-row items-center">
+          <p class="text-blue-600 w-36">Invoice Date</p>
+          <p>{{ invoice_date }}</p>
+        </div>
+        <div class="flex flex-row items-center">
+          <p class="text-blue-600 w-36">Invoice Number</p>
+          <p>{{ invoice_number }}</p>
+        </div>
+        <div class="flex flex-row items-center">
+          <p class="text-blue-600 w-36">Invoice Period</p>
+          <p>{{ period_start }} to {{ period_end }}</p>
+        </div>
+        <div class="flex flex-row items-center">
+          <p class="text-blue-600 w-36">Due Date</p>
+          <p>{{ due_date }}</p>
+        </div>
+      </div>
+
+      <table class="w-full border-collapse">
+        <thead>
+          <tr class="text-white bg-gradient-to-r from-blue-500 to-purple-600">
+            <th class="border px-4 py-2 text-left">Description</th>
+            <th class="border px-4 py-2 text-center">Rate</th>
+            <th class="border px-4 py-2 text-center">Amount</th>
+            <th class="border px-4 py-2 text-right">Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in items %}
+          <tr
+            class="{% if loop.index0 % 2 == 0 %}bg-blue-50{% else %}bg-white{% endif %}"
+          >
+            <td class="border px-4 py-2">{{ item.description }}</td>
+            <td class="border px-4 py-2 text-center">{{ item.price }}</td>
+            <td class="border px-4 py-2 text-center">{{ item.quantity }}</td>
+            <td class="border px-4 py-2 text-right">{{ item.total }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+        <tfoot>
+          <tr class="font-bold">
+            <td colspan="3" class="border px-4 py-2 text-right">Total</td>
+            <td class="border px-4 py-2 text-right">{{ total }}</td>
+          </tr>
+        </tfoot>
+      </table>
+
+      <div class="mt-10 text-base">
+        <p class="font-bold">
+          Payment Link:
+        </p>
+        <a href="{{ payment_link }}" class="text-blue-500 underline">{{ payment_link }}</a>
+      </div>
+      <div class="text-base text-center mt-20">
+        <p class="text-blue-600">
+          Thank you for your business.
+        </p>
+      </div>
+    </div>
+  </body>
+</html>
