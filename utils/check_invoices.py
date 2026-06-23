@@ -16,11 +16,8 @@ test_id = 1
 # )
 # cur.execute(query, (test_id,))
 
-query = (
-    "SELECT id, currency, amount, [url]"
-    "FROM payment_links"
-)
+query = "SELECT id, currency, amount, [url]FROM payment_links"
 cur.execute(query)
 
 row = cur.fetchone()
-print(dict(row))    
+print(dict(row))

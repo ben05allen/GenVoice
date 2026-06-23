@@ -30,7 +30,7 @@ def test_template(tmp_path):
     yield str(template_file)
 
 
-def mock_get_template_data(i: int):
+def mock_get_template_data(i: int, exclude_bank_details: bool = False):
     return {"test_string": f"invoice {i}"}
 
 

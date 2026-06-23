@@ -52,10 +52,7 @@ def get_sender(id: int):
 
 
 def get_payment_link(id: int):
-    query = (
-        "SELECT id, currency, amount, [url]"
-        "FROM payment_links WHERE id = ?"
-    )
+    query = "SELECT id, currency, amount, [url] FROM payment_links WHERE id = ?"
 
     with get_cursor() as cur:
         cur.execute(query, (id,))

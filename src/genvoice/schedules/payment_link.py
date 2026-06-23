@@ -3,6 +3,7 @@ from pydantic import field_validator
 
 from genvoice.schedules import Base
 
+
 class PaymentLink(Base):
     id: int
     currency: str

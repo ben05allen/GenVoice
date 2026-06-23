@@ -123,6 +123,32 @@ def tmp_db():
             sender,
         )
 
+        # set up test payment links
+        _ = cursor.execute("""
+            CREATE TABLE payment_links(
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                currency TEXT NOT NULL,
+                amount NUMERIC NOT NULL,
+                url TEXT NOT NULL)
+        """)
+
+        payment_links = [
+            (
+                "USD",
+                150.00,
+                "https://payment.example.com/pay",
+            )
+        ]
+
+        _ = cursor.executemany(
+            """
+            INSERT INTO payment_links (
+                currency, amount, url
+            ) VALUES (?, ?, ?)
+            """,
+            payment_links,
+        )
+
         # set up test invoice
         _ = cursor.execute("""
             CREATE TABLE invoices(
@@ -130,10 +156,12 @@ def tmp_db():
                 invoicee INTEGER NOT NULL,
                 date TEXT NOT NULL,
                 due_date TEXT NOT NULL,
+                payment_link INTEGER,
                 bank_instructions INTEGER NOT NULL,
                 sender INTEGER NOT NULL,
                 start_date TEXT,
                 end_date TEXT,
+                FOREIGN KEY(payment_link) REFERENCES payment_links(id),
                 FOREIGN KEY(bank_instructions) REFERENCES bank_instructions(id),
                 FOREIGN KEY(invoicee) REFERENCES invoicees(id),
                 FOREIGN KEY(sender) REFERENCES senders(id))
@@ -144,6 +172,7 @@ def tmp_db():
                 1,
                 "2020-01-01",
                 "2020-01-15",
+                None,
                 1,
                 1,
                 "2019-12-01",
@@ -154,8 +183,8 @@ def tmp_db():
         _ = cursor.executemany(
             """
             INSERT INTO invoices (
-                invoicee, date, due_date, bank_instructions, sender, start_date, end_date
-            ) VALUES (?, ?, ?, ?, ?, ?, ?)
+                invoicee, date, due_date, payment_link, bank_instructions, sender, start_date, end_date
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
             """,
             invoice,
         )
@@ -263,10 +292,23 @@ def test_fetch_invoice(tmp_db, monkeypatch):
     assert row["invoicee"] == 1
     assert row["date"] == "2020-01-01"
     assert row["due_date"] == "2020-01-15"
+    assert row["payment_link"] is None
     assert row["bank_instructions"] == 1
     assert row["sender"] == 1
     assert row["start_date"] == "2019-12-01"
     assert row["end_date"] == "2019-12-31"
+
+
+def test_fetch_payment_link(tmp_db, monkeypatch):
+    tmp_db_file = tmp_db
+    monkeypatch.setenv("DB_PATH", tmp_db_file)
+
+    row = db.get_payment_link(1)
+    assert isinstance(row, dict)
+    assert row["id"] == 1
+    assert row["currency"] == "USD"
+    assert row["amount"] == 150.00
+    assert row["url"] == "https://payment.example.com/pay"
 
 
 def test_fetch_line_items(tmp_db, monkeypatch):

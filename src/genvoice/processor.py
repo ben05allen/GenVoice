@@ -5,12 +5,12 @@ from .schedules.address import Address
 from .schedules.payment_link import PaymentLink
 
 
-def get_template_data(invoice_id: int, exclude_bank_details: bool = True):
+def get_template_data(invoice_id: int, exclude_bank_details: bool = False):
     invoice = Invoice(**db.get_invoice(invoice_id)).model_dump()  # type: ignore
     line_items = list(LineItem(**li) for li in db.get_line_items(invoice_id))  # type: ignore
     sender = Address(**db.get_sender(invoice["sender"]))  # type: ignore
     invoicee = Address(**db.get_invoicee(invoice["invoicee"]))  # type: ignore
-    
+
     bank_instructions = None
     if not exclude_bank_details:
         bank_instructions = BankInstructions(  # type: ignore

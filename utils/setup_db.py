@@ -50,6 +50,15 @@ try:
                 phone TEXT NOT NULL DEFAULT 'Your phone no')
         """)
 
+    # set up payment links table
+    _ = cursor.execute("""
+            CREATE TABLE payment_links(
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                currency TEXT NOT NULL,
+                amount NUMERIC NOT NULL,
+                url TEXT NOT NULL)
+        """)
+
     # set up invoices table
     _ = cursor.execute("""
             CREATE TABLE invoices(
@@ -57,10 +66,12 @@ try:
                 invoicee INTEGER NOT NULL DEFAULT 1,
                 date TEXT NOT NULL DEFAULT '2020-01-01',
                 due_date TEXT NOT NULL DEFAULT '2020-01-15',
+                payment_link INTEGER,
                 bank_instructions INTEGER NOT NULL DEFAULT 1,
                 sender INTEGER NOT NULL DEFAULT 1,
                 start_date TEXT,
                 end_date TEXT,
+                FOREIGN KEY(payment_link) REFERENCES payment_links(id),
                 FOREIGN KEY(bank_instructions) REFERENCES bank_instructions(id),
                 FOREIGN KEY(invoicee) REFERENCES invoicees(id),
                 FOREIGN KEY(sender) REFERENCES senders(id))

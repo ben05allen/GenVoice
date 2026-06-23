@@ -76,6 +76,6 @@ class Invoice(Base):
                 return date.strftime("%B %-d, %Y")
             except ValueError:
                 # Windows compatibility
-                return f"{date.strftime("%B")} {date.strftime("%d, %Y").lstrip("0")}"
+                return f"{date.strftime('%B')} {date.strftime('%d, %Y').lstrip('0')}"
 
         return None
