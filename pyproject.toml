@@ -5,12 +5,9 @@ description = "Generate invoices"
 readme = "README.md"
 requires-python = ">=3.12,<3.14"
 dependencies = [
-  "email-validator>=2.2.0",
   "jinja2>=3.1.4",
   "pydantic>=2.9.2",
   "python-dotenv>=1.0.1",
-  "ruff>=0.11.12",
-  "ty>=0.0.1a7",
   "weasyprint>=63.0",
 ]
 
@@ -19,17 +16,20 @@ genvoice = "genvoice:main"
 
 [dependency-groups]
 dev = [
+  "complexipy>=7.0.1",
+  "deptry>=0.25.1",
   "freezegun>=1.5.1",
   "pre-commit>=4.2.0",
+  "prek>=0.4.13",
   "pypdf>=5.4.0",
   "pytest>=8.3.3",
   "pytest-cov>=6.0.0",
   "ruff>=0.16.3",
-  "ty>=0.0.1a7",
+  "ty>=0.0.72",
 ]
 
 [build-system]
-requires = ["uv_build>=0.9.1,<0.10.0"]
+requires = ["uv_build>=0.12.5,<0.13"]
 build-backend = "uv_build"
 
 [tool.ruff.lint]

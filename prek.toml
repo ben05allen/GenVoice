@@ -1,0 +1,33 @@
+minimum_prek_version = "0.4.0"
+
+[[repos]]
+repo = "https://github.com/pre-commit/pre-commit-hooks"
+rev = "v6.0.0"
+hooks = [
+  { id = "check-json" },
+  { id = "trailing-whitespace" },
+  { id = "end-of-file-fixer" },
+  { id = "mixed-line-ending" },   # Keeps line endings safe for Windows
+]
+
+[[repos]]
+repo = "https://github.com/astral-sh/ruff-pre-commit"
+rev = "v0.16.1"
+hooks = [{ id = "ruff", args = ["--fix"] }, { id = "ruff-format" }]
+
+[[repos]]
+repo = "https://github.com/rohaquinlop/complexipy-pre-commit"
+rev = "v5.1.0"
+hooks = [{ id = "complexipy" }]
+
+[[repos]]
+repo = "local"
+hooks = [
+  { id = "ty", name = "ty", language = "system", entry = "ty check", files = "\\.py$" },
+]
+
+[[repos]]
+repo = "local"
+hooks = [
+  { id = "deptry", name = "deptry", entry = "uv run deptry .", language = "system", files = "pyproject\\.toml$", pass_filenames = false, always_run = true },
+]

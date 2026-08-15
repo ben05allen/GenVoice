@@ -42,6 +42,6 @@ def get_template_data(invoice_id: int, exclude_bank_details: bool = False):
     template_dict["period_start"] = invoice["period_start_date"]
     template_dict["period_end"] = invoice["period_end_date"]
     template_dict["due_date"] = invoice["due_date"]
-    template_dict["total"] = f"${sum(li.total for li in line_items):,.2f}"
+    template_dict["total"] = f"${sum(li.total for li in line_items):,.2f}"  # type: ignore
 
     return template_dict

@@ -45,8 +45,8 @@ def test_line_item_conversions():
     line_item = LineItem(
         description="New Line Item",
         currency="NZD",
-        quantity=5,  # type: ignore
-        price=20.00,  # type: ignore
+        quantity=5,
+        price=20.00,
         total=None,
     )
 

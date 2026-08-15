@@ -13,7 +13,7 @@ DATA = {
 
 
 def test_dates_are_formatted():
-    inv = Invoice(**DATA).model_dump()  # type: ignore
+    inv = Invoice(**DATA).model_dump()
     assert inv["period_start_date"] == "September 1, 2023"
     assert inv["period_end_date"] == "September 30, 2023"
     assert inv["invoice_date"] == "October 20, 2023"
