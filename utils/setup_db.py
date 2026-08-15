@@ -9,7 +9,7 @@ try:
 
     # set up bank instructions table
     _ = cursor.execute("""
-            CREATE TABLE bank_instructions( 
+            CREATE TABLE bank_instructions(
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 bank_name TEXT NOT NULL DEFAULT 'Bank Name',
                 branch TEXT NOT NULL DEFAULT 'Branch',
@@ -78,7 +78,7 @@ try:
         """)
 
     # set up some invoice line items table
-    _ = cursor.execute(""" 
+    _ = cursor.execute("""
             CREATE TABLE line_items(
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 invoice_id INTEGER NOT NULL DEFAULT 1,

@@ -39,3 +39,6 @@ ignore = ["DTZ005", "DTZ007"]
 
 [tool.pytest.ini_options]
 addopts = "--cov --cov-report=term-missing"
+
+[tool.deptry.per_rule_ignores]
+DEP003 = ["genvoice"]

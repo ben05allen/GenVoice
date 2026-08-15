@@ -16,7 +16,7 @@ def tmp_db():
 
         # set up test bank instructions
         _ = cursor.execute("""
-            CREATE TABLE bank_instructions( 
+            CREATE TABLE bank_instructions(
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 bank_name TEXT NOT NULL,
                 branch TEXT NOT NULL,
@@ -83,7 +83,7 @@ def tmp_db():
             """
             INSERT INTO invoicees (
                 name, contact_name, street_address, suburb, city, postcode, country, email, phone
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) 
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
             """,
             invoicee,
         )
@@ -191,7 +191,7 @@ def tmp_db():
         )
 
         # set up some test invoice line items
-        _ = cursor.execute(""" 
+        _ = cursor.execute("""
             CREATE TABLE line_items(
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 invoice_id INTEGER NOT NULL DEFAULT 1,
