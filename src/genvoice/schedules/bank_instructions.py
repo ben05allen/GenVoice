@@ -1,4 +1,5 @@
 from enum import StrEnum
+
 from pydantic import AliasChoices, Field
 
 from genvoice.schedules import Base

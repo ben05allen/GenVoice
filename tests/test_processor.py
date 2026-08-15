@@ -1,9 +1,10 @@
-import pytest
 import sqlite3
 import tempfile
 
-from genvoice.processor import get_template_data
+import pytest
+
 from genvoice.db import dict_factory
+from genvoice.processor import get_template_data
 
 
 @pytest.fixture(scope="module")

@@ -1,6 +1,5 @@
-import sys
 import sqlite3
-
+import sys
 
 database_file = sys.argv[1]
 

@@ -29,14 +29,14 @@ def test_new_line_item_success():
     line_item = LineItem(
         description="New Line Item",
         currency="NZD",
-        quantity=Decimal("5"),
+        quantity=Decimal(5),
         price=Decimal("20.00"),
         total=None,
     )
 
     assert line_item.description == "New Line Item"
     assert line_item.currency == "NZD"
-    assert line_item.quantity == Decimal("5")
+    assert line_item.quantity == Decimal(5)
     assert line_item.price == Decimal("20.00")
     assert line_item.total == Decimal("100.00")
 
@@ -52,7 +52,7 @@ def test_line_item_conversions():
 
     assert line_item.description == "New Line Item"
     assert line_item.currency == "NZD"
-    assert line_item.quantity == Decimal("5")
+    assert line_item.quantity == Decimal(5)
     assert line_item.price == Decimal("20.00")
     assert line_item.total == Decimal("100.00")
 
@@ -61,13 +61,13 @@ def test_line_item_total_not_provided():
     line_item = LineItem(
         description="New Line Item",
         currency="NZD",
-        quantity=Decimal("5"),
+        quantity=Decimal(5),
         price=Decimal("20.00"),
     )
 
     assert line_item.description == "New Line Item"
     assert line_item.currency == "NZD"
-    assert line_item.quantity == Decimal("5")
+    assert line_item.quantity == Decimal(5)
     assert line_item.price == Decimal("20.00")
     assert line_item.total == Decimal("100.00")
 

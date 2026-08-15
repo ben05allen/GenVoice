@@ -1,8 +1,9 @@
-import pytest
 import sqlite3
 import tempfile
 
-import genvoice.db as db
+import pytest
+
+from genvoice import db
 
 
 @pytest.fixture(scope="module")

@@ -9,6 +9,8 @@ dependencies = [
   "jinja2>=3.1.4",
   "pydantic>=2.9.2",
   "python-dotenv>=1.0.1",
+  "ruff>=0.11.12",
+  "ty>=0.0.1a7",
   "weasyprint>=63.0",
 ]
 
@@ -22,13 +24,18 @@ dev = [
   "pypdf>=5.4.0",
   "pytest>=8.3.3",
   "pytest-cov>=6.0.0",
-  "ruff>=0.11.12",
+  "ruff>=0.16.3",
   "ty>=0.0.1a7",
 ]
 
 [build-system]
 requires = ["uv_build>=0.9.1,<0.10.0"]
 build-backend = "uv_build"
+
+[tool.ruff.lint]
+# DTZ005: naive `now()` is deliberate — only used for a filename timestamp.
+# DTZ007: test fixtures parse date strings whose time component is discarded.
+ignore = ["DTZ005", "DTZ007"]
 
 [tool.pytest.ini_options]
 addopts = "--cov --cov-report=term-missing"

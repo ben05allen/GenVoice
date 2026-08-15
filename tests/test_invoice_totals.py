@@ -1,6 +1,5 @@
 from genvoice.schedules.invoice import Invoice
 
-
 DATA = {
     "invoice_date": "2023-10-20",
     "period_start_date": "2023-09-01",

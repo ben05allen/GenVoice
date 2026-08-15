@@ -1,14 +1,21 @@
-import pytest
 from unittest.mock import patch
+
+import pytest
 
 from genvoice import arg_parser
 
 
 def test_parse_args_required_arguments():
     # Simulate command-line arguments
-    test_args = (
-        "prog --invoice 1 --template path/to/tplt --destination path/to/dest".split()
-    )
+    test_args = [
+        "prog",
+        "--invoice",
+        "1",
+        "--template",
+        "path/to/tplt",
+        "--destination",
+        "path/to/dest",
+    ]
 
     with patch("sys.argv", test_args):
         args = arg_parser().parse_args()
@@ -18,7 +25,15 @@ def test_parse_args_required_arguments():
 
 
 def test_parse_args_short_flag_names():
-    test_args = "prog -i 2 -t path/to/template -d path/to/destination".split()
+    test_args = [
+        "prog",
+        "-i",
+        "2",
+        "-t",
+        "path/to/template",
+        "-d",
+        "path/to/destination",
+    ]
 
     with patch("sys.argv", test_args):
         args = arg_parser().parse_args()
@@ -28,14 +43,14 @@ def test_parse_args_short_flag_names():
 
 
 def test_parse_args_missing_required_invoice():
-    test_args = "prog --template path/to/tplt --destination path/to/dest".split()
+    test_args = ["prog", "--template", "path/to/tplt", "--destination", "path/to/dest"]
 
     with patch("sys.argv", test_args), pytest.raises(SystemExit):
         arg_parser().parse_args()  # should raise due to missing invoice number
 
 
 def test_parse_args_missing_required_template():
-    test_args = "prog --invoice 1 --destination path/to/dest".split()
+    test_args = ["prog", "--invoice", "1", "--destination", "path/to/dest"]
 
     with patch("sys.argv", test_args), pytest.raises(SystemExit):
         arg_parser().parse_args()  # should raise due to missing template

@@ -1,4 +1,4 @@
-from pydantic import EmailStr, Field, AliasChoices
+from pydantic import AliasChoices, EmailStr, Field
 
 from genvoice.schedules import Base
 

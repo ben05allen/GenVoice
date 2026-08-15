@@ -50,7 +50,7 @@ def main():
     template_dict = get_template_data(
         args.invoice, exclude_bank_details=exclude_bank_details
     )
-    invoice_template = Template(open(str(invoice_template_path.resolve())).read())
+    invoice_template = Template(invoice_template_path.read_text(encoding="utf-8"))
     rendered_html = invoice_template.render(template_dict)
 
     HTML(string=rendered_html).write_pdf(str(destination.resolve()))

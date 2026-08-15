@@ -1,7 +1,8 @@
+from unittest.mock import patch
+
+import pytest
 from freezegun import freeze_time
 from pypdf import PdfReader
-import pytest
-from unittest.mock import patch
 
 import genvoice
 

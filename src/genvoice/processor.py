@@ -1,13 +1,13 @@
 from . import db
-from .schedules.invoice import Invoice, LineItem
-from .schedules.bank_instructions import BankInstructions
 from .schedules.address import Address
+from .schedules.bank_instructions import BankInstructions
+from .schedules.invoice import Invoice, LineItem
 from .schedules.payment_link import PaymentLink
 
 
 def get_template_data(invoice_id: int, exclude_bank_details: bool = False):
     invoice = Invoice(**db.get_invoice(invoice_id)).model_dump()
-    line_items = list(LineItem(**li) for li in db.get_line_items(invoice_id))
+    line_items = [LineItem(**li) for li in db.get_line_items(invoice_id)]
     sender = Address(**db.get_sender(invoice["sender"]))
     invoicee = Address(**db.get_invoicee(invoice["invoicee"]))
 

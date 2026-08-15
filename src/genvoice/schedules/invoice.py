@@ -1,13 +1,14 @@
 from datetime import date
-from decimal import Decimal, ROUND_HALF_UP
+from decimal import ROUND_HALF_UP, Decimal
+from typing import Self
+
 from pydantic import (
     AliasChoices,
-    model_validator,
-    field_validator,
-    field_serializer,
     Field,
+    field_serializer,
+    field_validator,
+    model_validator,
 )
-from typing_extensions import Self
 
 from genvoice.schedules import Base
 
@@ -21,7 +22,7 @@ class LineItem(Base):
 
     @field_validator("quantity", "price", mode="before")
     @classmethod
-    def round_decimals(cls, v: int | float | Decimal | str) -> Decimal:
+    def round_decimals(cls, v: float | Decimal | str) -> Decimal:
         if not isinstance(v, Decimal):
             v = Decimal(str(v))
 
