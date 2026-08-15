@@ -6,25 +6,26 @@ from .schedules.payment_link import PaymentLink
 
 
 def get_template_data(invoice_id: int, exclude_bank_details: bool = False):
-    invoice = Invoice(**db.get_invoice(invoice_id)).model_dump()  # type: ignore
-    line_items = list(LineItem(**li) for li in db.get_line_items(invoice_id))  # type: ignore
-    sender = Address(**db.get_sender(invoice["sender"]))  # type: ignore
-    invoicee = Address(**db.get_invoicee(invoice["invoicee"]))  # type: ignore
+    invoice = Invoice(**db.get_invoice(invoice_id)).model_dump()
+    line_items = list(LineItem(**li) for li in db.get_line_items(invoice_id))
+    sender = Address(**db.get_sender(invoice["sender"]))
+    invoicee = Address(**db.get_invoicee(invoice["invoicee"]))
 
     bank_instructions = None
     if not exclude_bank_details:
-        bank_instructions = BankInstructions(  # type: ignore
+        bank_instructions = BankInstructions(
             **db.get_bank_instructions(invoice["bank_instructions"])
         )
 
     payment_link = None
     if invoice.get("payment_link"):
-        payment_link = PaymentLink(**db.get_payment_link(invoice["payment_link"]))  # type: ignore
+        payment_link = PaymentLink(**db.get_payment_link(invoice["payment_link"]))
 
     template_dict = {}
 
     template_dict["invoicee"] = invoicee.model_dump()
     template_dict["sender"] = sender.model_dump()
+
     if not exclude_bank_details:
         assert bank_instructions is not None
         template_dict["bank_instructions"] = bank_instructions.model_dump()

@@ -20,7 +20,7 @@ def test_mock_bank_instructions():
 
 def test_missing_account_number():
     with pytest.raises(ValueError):
-        BankInstructions(
+        BankInstructions(  # type: ignore
             bank_name="Mock Bank",
             branch="Main St",
             bank_code="1234",
