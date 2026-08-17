@@ -33,7 +33,7 @@ requires = ["uv_build>=0.12.5,<0.13"]
 build-backend = "uv_build"
 
 [tool.ruff.lint]
-select = ["C901"]
+extend-select = ["C901"]
 ignore = ["DTZ005", "DTZ007"]
 
 [tool.ruff.lint.mccabe]
